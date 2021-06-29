@@ -17,7 +17,7 @@ abstract class BaseRepository {
                 when(throwable) {
                     is HttpException -> {
                         Resource.Failure(false, throwable.code(), throwable.response()?.errorBody())
-                    } else {
+                    } else -> {
                         Resource.Failure(true, null, null)
                     }
                 }
