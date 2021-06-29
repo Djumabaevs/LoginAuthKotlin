@@ -10,7 +10,9 @@ import com.bignerdranch.android.loginauthkotlin.data.UserPreferences
 import com.bignerdranch.android.loginauthkotlin.ui.auth.AuthActivity
 import com.bignerdranch.android.loginauthkotlin.ui.home.HomeActivity
 import com.bignerdranch.android.loginauthkotlin.ui.startNewActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
