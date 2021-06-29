@@ -8,6 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import com.bignerdranch.android.loginauthkotlin.data.UserPreferences
 import com.bignerdranch.android.loginauthkotlin.ui.auth.AuthActivity
+import com.bignerdranch.android.loginauthkotlin.ui.home.HomeActivity
+import com.bignerdranch.android.loginauthkotlin.ui.startNewActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,9 +19,11 @@ class MainActivity : AppCompatActivity() {
         val userPreferences = UserPreferences(this)
 
         userPreferences.authToken.asLiveData().observe(this, Observer {
+            val activity = if(it == null) AuthActivity::class.java else HomeActivity::class.java
             Toast.makeText(this, it ?: "Token is null", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, AuthActivity::class.java))
+            startNewActivity(activity)
+
         })
-        
+
     }
 }
