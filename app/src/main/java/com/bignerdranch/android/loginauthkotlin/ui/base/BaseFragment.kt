@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.bignerdranch.android.loginauthkotlin.data.network.RemoteDataSource
 import com.bignerdranch.android.loginauthkotlin.data.repository.BaseRepository
 
 abstract class BaseFragment<
@@ -14,6 +15,8 @@ abstract class BaseFragment<
 >: Fragment() {
 
     protected lateinit var binding: B
+
+    protected val remoteDataSource = RemoteDataSource()
 
     override fun onCreateView(
         inflater: LayoutInflater,
