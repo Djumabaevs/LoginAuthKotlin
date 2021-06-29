@@ -11,12 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.bignerdranch.android.loginauthkotlin.data.UserPreferences
 import com.bignerdranch.android.loginauthkotlin.data.network.RemoteDataSource
+import com.bignerdranch.android.loginauthkotlin.data.network.UserApi
 import com.bignerdranch.android.loginauthkotlin.data.repository.BaseRepository
+import com.bignerdranch.android.loginauthkotlin.ui.auth.AuthActivity
+import com.bignerdranch.android.loginauthkotlin.ui.startNewActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 abstract class BaseFragment<
-    VM: ViewModel, B: ViewBinding, R: BaseRepository
+    VM: BaseViewModel, B: ViewBinding, R: BaseRepository
 >: Fragment() {
 
     protected lateinit var userPreferences: UserPreferences
@@ -39,6 +42,14 @@ abstract class BaseFragment<
         lifecycleScope.launch { userPreferences.authToken.first() }
 
         return binding.root
+    }
+
+    fun logout() = lifecycleScope.launch {
+        val authToken = userPreferences.authToken.first()
+        val api = remoteDataSource.buildApi(UserApi::class.java, authToken)
+        viewModel.logout(api)
+        userPreferences.clear()
+        requireActivity().startNewActivity(AuthActivity::class.java)
     }
 
     abstract fun getViewModel(): Class<VM>

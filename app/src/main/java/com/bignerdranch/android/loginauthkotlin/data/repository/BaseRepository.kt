@@ -1,6 +1,7 @@
 package com.bignerdranch.android.loginauthkotlin.data.repository
 
 import com.bignerdranch.android.loginauthkotlin.data.network.Resource
+import com.bignerdranch.android.loginauthkotlin.data.network.UserApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -23,6 +24,10 @@ abstract class BaseRepository {
                 }
             }
         }
+    }
+
+    suspend fun logout(api: UserApi) = safeApiCall {
+        api.logout()
     }
 
 }

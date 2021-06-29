@@ -16,6 +16,7 @@ import com.bignerdranch.android.loginauthkotlin.data.repository.AuthRepository
 import com.bignerdranch.android.loginauthkotlin.databinding.FragmentLoginBinding
 import com.bignerdranch.android.loginauthkotlin.ui.base.BaseFragment
 import com.bignerdranch.android.loginauthkotlin.ui.enable
+import com.bignerdranch.android.loginauthkotlin.ui.handleApiError
 import com.bignerdranch.android.loginauthkotlin.ui.home.HomeActivity
 import com.bignerdranch.android.loginauthkotlin.ui.startNewActivity
 import com.bignerdranch.android.loginauthkotlin.ui.visible
@@ -30,16 +31,19 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.buttonLogin.enable(false)
 
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressbar.visible(false)
+            binding.progressbar.visible(it is Resource.Loading)
             when (it) {
                 is Resource.Success -> {
                     Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
 
-                        viewModel.saveAuthToken(it.value.user.access_token!!)
-                        requireActivity().startNewActivity(HomeActivity::class.java)
+                      lifecycleScope.launch {
+                          viewModel.saveAuthToken(it.value.user.access_token!!)
+                          requireActivity().startNewActivity(HomeActivity::class.java)
+                      }
 
                 }
                 is Resource.Failure -> {
+                    handleApiError(it) { login() }
                     Toast.makeText(requireContext(), "Login Failure", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -51,11 +55,14 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         }
 
         binding.buttonLogin.setOnClickListener {
-            val email = binding.editTextTextEmailAddress.toString().trim()
-            val password = binding.editTextTextPassword.toString().trim()
-            binding.progressbar.visible(true)
-            viewModel.login(email, password)
+            login()
         }
+    }
+
+    private fun login() {
+        val email = binding.editTextTextEmailAddress.toString().trim()
+        val password = binding.editTextTextPassword.toString().trim()
+        viewModel.login(email, password)
     }
 
     override fun getViewModel() = AuthViewModel::class.java
