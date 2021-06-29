@@ -13,6 +13,17 @@ import com.bignerdranch.android.loginauthkotlin.ui.base.BaseFragment
 
 class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository>() {
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        binding.buttonLogin.setOnClickListener {
+            val email = binding.editTextTextEmailAddress.toString().trim()
+            val password = binding.editTextTextPassword.toString().trim()
+            //@todo add input validations
+            viewModel.login(email, password)
+        }
+    }
+
     override fun getViewModel() = AuthViewModel::class.java
 
     override fun getFragmentBinding(
