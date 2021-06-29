@@ -1,11 +1,23 @@
 package com.bignerdranch.android.loginauthkotlin.data.repository
 
+import com.bignerdranch.android.loginauthkotlin.data.network.BaseApi
 import com.bignerdranch.android.loginauthkotlin.data.network.Resource
+import com.bignerdranch.android.loginauthkotlin.data.network.SafeApiCall
 import com.bignerdranch.android.loginauthkotlin.data.network.UserApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
+
+abstract class BaseRepository(private val api: BaseApi) : SafeApiCall {
+
+    suspend fun logout() = safeApiCall {
+        api.logout()
+    }
+}
+
+
+/*
 abstract class BaseRepository {
 
     suspend fun <T> safeApiCall(
@@ -30,4 +42,4 @@ abstract class BaseRepository {
         api.logout()
     }
 
-}
+}*/
