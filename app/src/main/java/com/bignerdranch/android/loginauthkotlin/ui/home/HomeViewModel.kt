@@ -1,5 +1,6 @@
 package com.bignerdranch.android.loginauthkotlin.ui.home
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,7 @@ import com.bignerdranch.android.loginauthkotlin.data.responses.LoginResponse
 import com.bignerdranch.android.loginauthkotlin.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class HomeViewModel @ViewModelInject constructor(
     private val repository: UserRepository
 ): BaseViewModel(repository) {
 

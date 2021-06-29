@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bignerdranch.android.loginauthkotlin.data.network.Resource
 import com.bignerdranch.android.loginauthkotlin.ui.auth.LoginFragment
 import com.bignerdranch.android.loginauthkotlin.ui.base.BaseFragment
+import com.bignerdranch.android.loginauthkotlin.ui.home.HomeActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 fun<A: Activity> Activity.startNewActivity(activity: Class<A>) {
     Intent(this, activity).also {
@@ -33,6 +36,12 @@ fun View.snackbar(message: String, action: ( () -> Unit)? = null ) {
         }
     }
     snackbar.show()
+}
+
+fun Fragment.logout() = lifecycleScope.launch {
+    if (activity is HomeActivity) {
+        (activity as HomeActivity).performLogout()
+    }
 }
 
 fun Fragment.handleApiError(
